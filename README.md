@@ -18,6 +18,10 @@ Before using this script, make sure you have `fzf` installed on your system. If 
   ```bash
   sudo dnf install fzf
   ```
+- On Arch:
+  ```bash
+  sudo pacman -S fzf
+  ```
 - On macOS:
   ```bash
   brew install fzf
