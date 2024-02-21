@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "fzf is not installed. Please install it to proceed."
+    exit 1
+fi
+
+# Define color scheme for fzf
+fzf_colors="bg:#282c34,\
+fg:#ebdbb2,\
+hl:#fabd2f,\
+fg+:#fbf1c7,\
+bg+:#3c3836,\
+hl+:#fabd2f,\
+info:#8ec07c,\
+prompt:#b8bb26,\
+pointer:#fe8019,\
+marker:#d3869b,\
+spinner:#b8bb26,\
+header:#83a598"
+
+# Parse SSH config and extract host names
+hosts=$(grep "^Host " ~/.ssh/config | awk '{print $2}' | grep -v "\*" )
+
+# Use fzf with the defined color scheme to select a host
+selected_host=$(echo "$hosts" | fzf --reverse --color "$fzf_colors" \
+  --prompt "Use ↑ and ↓ to select host. ESC to exit. > " \
+  --header "Choose a host to SSH into:" \
+  --preview "grep -A 5 -e \"^Host \$(echo {} | sed 's/.* //')\" ~/.ssh/config | tail -n +2 | grep '#Info:' || echo 'No additional info available for {}.'" \
+  --preview-window right:50%:noborder)
+
+# SSH to the selected host
+if [ -n "$selected_host" ]; then
+  echo "Logging in to $selected_host..."
+  ssh "$selected_host"
+else
+  echo "No host selected"
+fi
