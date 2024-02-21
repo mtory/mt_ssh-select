@@ -2,7 +2,7 @@
 
 This script provides a convenient interface to select and SSH into hosts configured in your `~/.ssh/config` file using `fzf`, the command-line fuzzy finder.
 
-![Screenshot of SSH Host Selector Script](images/screenshot.png)
+![Screenshot of SSH Host Selector Script](screenshot.png)
 
 ## Prerequisites
 
